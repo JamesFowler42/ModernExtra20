@@ -1,44 +1,47 @@
 {
-  "uuid": "698B3E04-B12E-4FF5-BFAD-1BE6BDEEB5D8",
-  "shortName": "Modern Extra",
-  "longName": "Modern Extra",
-  "companyName": "Zalew/Fowler",
-  "versionCode": 1,
-  "versionLabel": "1.0.0",
-  "watchapp": {
-    "watchface": true
-  },
-  "appKeys": {
-    "dummy": 0
-  },
-  "resources": {
-    "media": [
-        {
-            "name": "IMAGE_BACKGROUND",
-            "type": "png",
-            "file": "images/modern_background_new.png"
-        },
-        {
-            "name": "IMAGE_MENU_ICON",
-            "menuIcon": "true",
-            "type": "png",
-            "file": "images/modern_logo.png"
-        },
-        {
-            "name": "BATTERY_ICON",
-            "type": "png",
-            "file": "images/battery_icon.png"
-        },
-        {
-            "name": "BATTERY_CHARGE",
-            "type": "png",
-            "file": "images/battery-charge.png"
-        },
-        {
-            "name": "BLUETOOTH",
-            "type": "png",
-            "file": "images/bluetooth.png"
-        }
-    ]
-  }
+    "versionLabel": "1.0.0",
+    "uuid": "698B3E04-B12E-4FF5-BFAD-1BE6BDEEB5D8",
+    "appKeys": {
+        "dummy": 0
+    },
+    "longName": "Modern Extra",
+    "versionCode": 1,
+    "capabilities": [
+        ""
+    ],
+    "shortName": "Modern Extra",
+    "companyName": "Zalew/Fowler",
+    "watchapp": {
+        "watchface": true
+    },
+    "resources": {
+        "media": [
+            {
+                "type": "png",
+                "name": "BLUETOOTH",
+                "file": "images/bluetooth.png"
+            },
+            {
+                "type": "png",
+                "name": "BATTERY_CHARGE",
+                "file": "images/battery-charge.png"
+            },
+            {
+                "type": "png",
+                "name": "BATTERY_ICON",
+                "file": "images/battery_icon.png"
+            },
+            {
+                "menuIcon": true,
+                "type": "png",
+                "name": "IMAGE_MENU_ICON",
+                "file": "images/modern_logo.png"
+            },
+            {
+                "type": "png",
+                "name": "IMAGE_BACKGROUND",
+                "file": "images/modern_background_new.png"
+            }
+        ]
+    }
 }

@@ -317,7 +317,7 @@ void init() {
 	// Configurable inverse
 #ifdef INVERSE
 	full_inverse_layer = inverter_layer_create(GRECT_FULL_WINDOW);
-	layer_add_child(window_layer, full_inverse_layer);
+	layer_add_child(window_layer, inverter_layer_get_layer(full_inverse_layer));
 #endif
 
 }
