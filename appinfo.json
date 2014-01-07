@@ -1,15 +1,15 @@
 {
     "versionLabel": "1.0.0",
-    "uuid": "698B3E04-B12E-4FF5-BFAD-1BE6BDEEB5D8",
+    "uuid": "18494A8C-4361-4B38-8DC0-08649C6467E6",
     "appKeys": {
         "dummy": 0
     },
-    "longName": "Modern Extra",
+    "longName": "Maurice Extra",
     "versionCode": 1,
     "capabilities": [
         ""
     ],
-    "shortName": "Modern Extra",
+    "shortName": "Maurice Extra",
     "companyName": "Zalew/Fowler",
     "watchapp": {
         "watchface": true
@@ -35,12 +35,12 @@
                 "menuIcon": true,
                 "type": "png",
                 "name": "IMAGE_MENU_ICON",
-                "file": "images/modern_logo.png"
+                "file": "images/maurice_logo.png"
             },
             {
                 "type": "png",
                 "name": "IMAGE_BACKGROUND",
-                "file": "images/modern_background_new.png"
+                "file": "images/maurice_background.png"
             }
         ]
     }
