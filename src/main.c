@@ -7,11 +7,8 @@ static GBitmap *background_image_container;
 static Layer *minute_display_layer;
 static Layer *hour_display_layer;
 static Layer *center_display_layer;
-
 static Layer *second_display_layer;
-
 static TextLayer *date_layer;
-
 static char date_text[] = "Wed 13 ";
 static bool bt_ok = false;
 static uint8_t battery_level;
@@ -33,25 +30,11 @@ static InverterLayer *full_inverse_layer;
 static Layer *background_layer;
 static Layer *window_layer;
 
-const GPathInfo MINUTE_HAND_PATH_POINTS = {
-		4,
-		(GPoint []) {
-			{0, 15},
-			{6, 0},
-			{0, -72},
-			{-6, 0},
-		}
-};
+const GPathInfo MINUTE_HAND_PATH_POINTS = { 4, (GPoint[] ) { { -4, 15 },
+				{ 4, 15 }, { 4, -70 }, { -4, -70 }, } };
 
-const GPathInfo HOUR_HAND_PATH_POINTS = {
-		4,
-		(GPoint []) {
-			{0, 15},
-			{7, 0},
-			{0, -50},
-			{-7, 0},
-		}
-};
+const GPathInfo HOUR_HAND_PATH_POINTS = { 4, (GPoint[] ) { { -4, 15 },
+				{ 4, 15 }, { 4, -50 }, { -4, -50 }, } };
 
 static GPath *hour_hand_path;
 static GPath *minute_hand_path;
@@ -97,20 +80,20 @@ void handle_timer(void* vdata) {
 }
 
 void second_display_layer_update_callback(Layer *me, GContext* ctx) {
-	(void)me;
+	(void) me;
 
 	time_t now = time(NULL);
 	struct tm *t = localtime(&now);
 
 	int32_t second_angle = t->tm_sec * (0xffff / 60);
-	int second_hand_length = 72;
+	int second_hand_length = 70;
 	GPoint center = grect_center_point(&GRECT_FULL_WINDOW);
 	GPoint second = GPoint(center.x, center.y - second_hand_length);
 
 	if (init_anim < ANIM_SECONDS) {
-		second = GPoint(center.x, center.y - 72);
+		second = GPoint(center.x, center.y - 70);
 	} else if (init_anim == ANIM_SECONDS) {
-		second_angle_anim += 0xffff/60;
+		second_angle_anim += 0xffff / 60;
 		if (second_angle_anim >= second_angle) {
 			init_anim = ANIM_DONE;
 			second =
@@ -133,17 +116,17 @@ void second_display_layer_update_callback(Layer *me, GContext* ctx) {
 }
 
 void center_display_layer_update_callback(Layer *me, GContext* ctx) {
-	(void)me;
+	(void) me;
 
 	GPoint center = grect_center_point(&GRECT_FULL_WINDOW);
 	graphics_context_set_fill_color(ctx, GColorBlack);
-	graphics_fill_circle(ctx, center, 2);
+	graphics_fill_circle(ctx, center, 4);
 	graphics_context_set_fill_color(ctx, GColorWhite);
-	graphics_fill_circle(ctx, center, 1);
+	graphics_fill_circle(ctx, center, 3);
 }
 
 void minute_display_layer_update_callback(Layer *me, GContext* ctx) {
-	(void)me;
+	(void) me;
 
 	time_t now = time(NULL);
 	struct tm *t = localtime(&now);
@@ -171,7 +154,7 @@ void minute_display_layer_update_callback(Layer *me, GContext* ctx) {
 }
 
 void hour_display_layer_update_callback(Layer *me, GContext* ctx) {
-	(void)me;
+	(void) me;
 
 	time_t now = time(NULL);
 	struct tm *t = localtime(&now);
@@ -216,16 +199,16 @@ void draw_date() {
  */
 void battery_layer_update_callback(Layer *layer, GContext *ctx) {
 
-	graphics_context_set_compositing_mode(ctx, GCompOpAssign);
+  graphics_context_set_compositing_mode(ctx, GCompOpAssign);
 
-	if (!battery_plugged) {
-		graphics_draw_bitmap_in_rect(ctx, icon_battery, GRect(0, 0, 24, 12));
-		graphics_context_set_stroke_color(ctx, GColorBlack);
-		graphics_context_set_fill_color(ctx, GColorWhite);
-		graphics_fill_rect(ctx, GRect(7, 4, (uint8_t)((battery_level / 100.0) * 11.0), 4), 0, GCornerNone);
-	} else {
-		graphics_draw_bitmap_in_rect(ctx, icon_battery_charge, GRect(0, 0, 24, 12));
-	}
+  if (!battery_plugged) {
+    graphics_draw_bitmap_in_rect(ctx, icon_battery, GRect(0, 0, 24, 12));
+    graphics_context_set_stroke_color(ctx, GColorBlack);
+    graphics_context_set_fill_color(ctx, GColorWhite);
+    graphics_fill_rect(ctx, GRect(7, 4, (uint8_t)((battery_level / 100.0) * 11.0), 4), 0, GCornerNone);
+  } else {
+    graphics_draw_bitmap_in_rect(ctx, icon_battery_charge, GRect(0, 0, 24, 12));
+  }
 }
 
 
@@ -244,16 +227,14 @@ void battery_state_handler(BatteryChargeState charge) {
  * Bluetooth icon callback handler
  */
 void bt_layer_update_callback(Layer *layer, GContext *ctx) {
-	if (bt_ok)
-		graphics_context_set_compositing_mode(ctx, GCompOpAssign);
-	else
-		graphics_context_set_compositing_mode(ctx, GCompOpClear);
-	graphics_draw_bitmap_in_rect(ctx, icon_bt, GRect(0, 0, 9, 12));
+  if (bt_ok)
+  	graphics_context_set_compositing_mode(ctx, GCompOpAssign);
+  else
+  	graphics_context_set_compositing_mode(ctx, GCompOpClear);
+  graphics_draw_bitmap_in_rect(ctx, icon_bt, GRect(0, 0, 9, 12));
 }
 
 void bt_connection_handler(bool connected) {
-	if (!connected && bt_ok)
-		vibes_short_pulse();
 	bt_ok = connected;
 	layer_mark_dirty(bt_layer);
 }
@@ -300,6 +281,7 @@ void init() {
 	layer_set_update_proc(battery_layer, &battery_layer_update_callback);
 	layer_add_child(window_layer, battery_layer);
 
+
 	bt_ok = bluetooth_connection_service_peek();
 	bt_layer = layer_create(GRect(83,56,9,12)); //9*12
 	layer_set_update_proc(bt_layer, &bt_layer_update_callback);
@@ -307,24 +289,29 @@ void init() {
 
 	// Hands setup
 	hour_display_layer = layer_create(GRECT_FULL_WINDOW);
-	layer_set_update_proc(hour_display_layer, &hour_display_layer_update_callback);
+	layer_set_update_proc(hour_display_layer,
+			&hour_display_layer_update_callback);
 	layer_add_child(window_layer, hour_display_layer);
 
 	hour_hand_path = gpath_create(&HOUR_HAND_PATH_POINTS);
 	gpath_move_to(hour_hand_path, grect_center_point(&GRECT_FULL_WINDOW));
 
 	minute_display_layer = layer_create(GRECT_FULL_WINDOW);
-	layer_set_update_proc(minute_display_layer, &minute_display_layer_update_callback);
+	layer_set_update_proc(minute_display_layer,
+			&minute_display_layer_update_callback);
 	layer_add_child(window_layer, minute_display_layer);
+
 	minute_hand_path = gpath_create(&MINUTE_HAND_PATH_POINTS);
 	gpath_move_to(minute_hand_path, grect_center_point(&GRECT_FULL_WINDOW));
 
 	center_display_layer = layer_create(GRECT_FULL_WINDOW);
-	layer_set_update_proc(center_display_layer, &center_display_layer_update_callback);
+	layer_set_update_proc(center_display_layer,
+			&center_display_layer_update_callback);
 	layer_add_child(window_layer, center_display_layer);
 
 	second_display_layer = layer_create(GRECT_FULL_WINDOW);
-	layer_set_update_proc(second_display_layer, &second_display_layer_update_callback);
+	layer_set_update_proc(second_display_layer,
+			&second_display_layer_update_callback);
 	layer_add_child(window_layer, second_display_layer);
 
 	// Configurable inverse
@@ -413,3 +400,4 @@ int main(void) {
 	app_event_loop();
 	deinit();
 }
+
